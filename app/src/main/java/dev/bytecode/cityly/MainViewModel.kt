@@ -1,6 +1,8 @@
 package dev.bytecode.cityly
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -16,11 +18,17 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val listOfUrbanAreaNamesHrefs = mutableMapOf<String, String>()
-    val mapOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
+    val listOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
     val TAG = "MainViewModel"
+    var uiState = mutableStateOf(MainUiState())
+
+    init {
+        getUrbanAreas()
+    }
 
     fun getUrbanAreas() {
         viewModelScope.launch {
+            uiState.value = MainUiState(emptyList(), true)
             val urbanAreas = urbanAreasService.getUrbanAreas()
             urbanAreas.links.uaItem.forEach { uaItem ->
                 val startIndex = uaItem.href.indexOfLast { it == ':' }
@@ -29,20 +37,23 @@ class MainViewModel @Inject constructor(
                 listOfUrbanAreaNamesHrefs[uaItem.name] = href
 
             }
-        //    Log.d(TAG, listOfUrbanAreaNamesHrefs.toString())
+            //    Log.d(TAG, listOfUrbanAreaNamesHrefs.toString())
 
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.first())
+            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
+            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(1))
+            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(2))
+            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(3))
+            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
+            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
+            uiState.value = MainUiState(listOfUrbanAreaInfo, false)
         }
     }
 
-    fun getUrbanInfo(name: String) {
-        viewModelScope.launch {
-            val urbanAreaInfo = urbanAreasService.getUrbanAreaInfo(name)
-            urbanAreaInfo.salaries = urbanAreasService.getUrbanAreaSalaries(name)
-            urbanAreaInfo.scores = urbanAreasService.getUrbanAreaScores(name)
-            Log.d("$TAG-salaries", Gson().toJson(urbanAreaInfo.salaries))
-            Log.d("$TAG-scores", Gson().toJson(urbanAreaInfo.scores))
-            Log.d("$TAG-urbaninfo", urbanAreaInfo.toString())
-        }
+    suspend fun getUrbanInfo(name: String) {
+        val urbanAreaInfo = urbanAreasService.getUrbanAreaInfo(name)
+        urbanAreaInfo.salaries = urbanAreasService.getUrbanAreaSalaries(name)
+        urbanAreaInfo.scores = urbanAreasService.getUrbanAreaScores(name)
+        listOfUrbanAreaInfo.add(urbanAreaInfo)
+
     }
 }

@@ -1,8 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        compose_version = '1.0.1'
-        kotlin_version = "1.5.21"
+        compose_version = '1.0.5'
+        kotlin_version = "1.5.31"
         hiltVersion = "2.38.1"
         room_version = "2.3.0"
         lifecycle_version = "2.4.0"
@@ -15,7 +15,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.3"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // Serialization
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
