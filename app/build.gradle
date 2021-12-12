@@ -76,7 +76,12 @@ dependencies {
     // Compose-LiveData
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.compose.runtime:runtime:$compose_version"
+
+    // Compose Compiler
     implementation("androidx.compose.compiler:compiler:$compose_version")
+
+    // Compose Navigation
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"

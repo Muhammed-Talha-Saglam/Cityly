@@ -1,31 +1,30 @@
 package dev.bytecode.cityly
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.text.HtmlCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.bytecode.cityly.model.UrbanAreaInfo
 import dev.bytecode.cityly.ui.theme.CitylyTheme
-import dev.bytecode.cityly.utilities.HtmlText
-import kotlin.math.roundToInt
-import kotlin.math.roundToLong
+import dev.bytecode.cityly.ui.theme.components.cityItemDetails
+import dev.bytecode.cityly.ui.theme.components.cityItemsList
+import dev.bytecode.cityly.ui.theme.components.drawerContent
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -46,57 +45,41 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HomePage(vm: MainViewModel) {
 
-    var state = vm.uiState
-    Log.d("listOfCities", state.toString())
+    var uiState = vm.uiState
 
     val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
+    val navController = rememberNavController()
+
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dp(60f))
-                    .background(Color.Black, RoundedCornerShape(0, 0, 40, 40)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Cityly", color = Color.White)
+            TopAppBar(
+                title = {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        Icon(imageVector = Icons.Default.Menu,
+                            contentDescription = null,
+                            modifier = Modifier.clickable { scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } })
+                        Text(text = "City.Ly", textAlign = TextAlign.Center)
+                        Icon(imageVector = Icons.Default.Info, contentDescription = null, modifier = Modifier.padding(end = Dp(4f)))
+                    }
+                },
+            )
+        },
+        drawerContent = { drawerContent() },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Default.AddCircle, contentDescription = null)
             }
         }
 
     ) {
-        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(Dp(10f))) {
-            if (state.value.loading) {
-                item {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
-            } else {
-                items(state.value.dataToDisplayOnScreen) { city ->
-                    CityItem(city)
-                }
-            }
+        NavHost(navController = navController, startDestination = "cityItemsList") {
+            composable("cityItemsList") {cityItemsList(uiState, navController)}
+            composable("cityItemDetails") { cityItemDetails()}
         }
-
     }
 
 }
-
-@Composable
-fun CityItem(city: UrbanAreaInfo) {
-    Column(Modifier.padding(vertical = Dp(10f)).background(color = Color.Yellow, shape = RoundedCornerShape(10f)).padding(Dp(4f))) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = city.fullName, color = Color.Red)
-            Text(text = city.scores.teleportCityScore.roundToInt().toString(), color = Color.Blue)
-        }
-        Spacer(modifier = Modifier.height(Dp(4f)))
-        HtmlText(html = city.scores.summary)
-    }
-}
-
 

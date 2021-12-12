@@ -1,4 +1,4 @@
-package dev.bytecode.cityly
+package dev.bytecode.cityly.model.states
 
 import dev.bytecode.cityly.model.UrbanAreaInfo
 

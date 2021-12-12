@@ -1,13 +1,11 @@
 package dev.bytecode.cityly
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bytecode.cityly.model.UrbanAreaInfo
+import dev.bytecode.cityly.model.states.MainUiState
 import dev.bytecode.cityly.network.UrbanAreasService
 import kotlinx.coroutines.launch
 import javax.inject.Inject
