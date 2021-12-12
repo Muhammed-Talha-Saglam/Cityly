@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -30,12 +32,11 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val vm: MainViewModel by viewModels()
         setContent {
             CitylyTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    HomePage(vm)
+                    HomePage()
                 }
             }
         }
@@ -43,14 +44,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomePage(vm: MainViewModel) {
+fun HomePage() {
 
-    var uiState = vm.uiState
+   // val vm = viewModel<MainViewModel>()
+    val vm: MainViewModel = hiltViewModel()
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val navController = rememberNavController()
-
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -69,14 +70,14 @@ fun HomePage(vm: MainViewModel) {
         },
         drawerContent = { drawerContent() },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { }) {
                 Icon(imageVector = Icons.Default.AddCircle, contentDescription = null)
             }
         }
 
     ) {
         NavHost(navController = navController, startDestination = "cityItemsList") {
-            composable("cityItemsList") {cityItemsList(uiState, navController)}
+            composable("cityItemsList") {cityItemsList( vm = vm,navController =  navController)}
             composable("cityItemDetails") { cityItemDetails()}
         }
     }
