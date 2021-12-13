@@ -1,6 +1,7 @@
 package dev.bytecode.cityly.model
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 data class Scores(
     val categories: List<Category>,

@@ -1,6 +1,7 @@
 package dev.bytecode.cityly.model
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 data class SalaryPercentiles(
     val percentile25: Double,

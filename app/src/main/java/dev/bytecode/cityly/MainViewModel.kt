@@ -1,21 +1,16 @@
 package dev.bytecode.cityly
 
 import android.app.Application
-import androidx.compose.runtime.mutableStateOf
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.bytecode.cityly.core.util.Resource
+import dev.bytecode.cityly.model.Result
 import dev.bytecode.cityly.model.UrbanAreaInfo
-import dev.bytecode.cityly.model.states.MainUiState
 import dev.bytecode.cityly.network.UrbanAreasService
 import dev.bytecode.cityly.utilities.NetworkUtils
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Error
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,19 +22,20 @@ class MainViewModel @Inject constructor(
 
     val listOfUrbanAreaNamesHrefs = mutableMapOf<String, String>()
     val listOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
-    var uiState = mutableStateOf(MainUiState())
-    var resource = MutableLiveData<Resource<List<UrbanAreaInfo>>>()
+    var selectedUrbanAreaInfo: UrbanAreaInfo? = null
+
+    var result = MutableLiveData<Result<List<UrbanAreaInfo>>>()
 
     init {
+        Log.d(TAG, "init")
         getUrbanAreas()
     }
 
     fun getUrbanAreas() {
         viewModelScope.launch {
-            resource.value = Resource.Loading()
+            result.value = Result.Loading()
             if (!NetworkUtils.isOnline(getApplication())) {
-                delay(2000)
-                resource.value = Resource.Error("No Network Connection")
+                result.value = Result.Error("No Network Connection")
                 return@launch
             }
             try {
@@ -57,9 +53,9 @@ class MainViewModel @Inject constructor(
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(3))
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
-                resource.value = Resource.Success(listOfUrbanAreaInfo)
+                result.value = Result.Success(listOfUrbanAreaInfo)
             } catch (e: Error) {
-                resource.value = Resource.Error("Error while fetching from api")
+                result.value = Result.Error("Error while fetching from api")
 
             }
 

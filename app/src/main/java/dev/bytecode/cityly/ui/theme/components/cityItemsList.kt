@@ -13,37 +13,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
 import dev.bytecode.cityly.MainViewModel
-import dev.bytecode.cityly.core.util.Resource
+import dev.bytecode.cityly.model.Result
 import dev.bytecode.cityly.model.UrbanAreaInfo
 
 @Composable
 fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
 
-    val resources = vm.resource.observeAsState()
+    val result = vm.result.observeAsState()
 
-    when (resources.value) {
-        is Resource.Loading -> {
+    when (result.value) {
+        is Result.Loading -> {
             Box(Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
-        is Resource.Success -> {
+        is Result.Success -> {
             LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(Dp(10f))) {
                 items(
-                    (resources.value as Resource.Success<List<UrbanAreaInfo>>).data!!,
+                    (result.value as Result.Success<List<UrbanAreaInfo>>).data!!,
                     key = { city -> city.fullName }) { city ->
-                    CityItem(city, navController)
+                    CityItem(city, navController, vm)
                 }
 
             }
         }
-        is Resource.Error -> {
+        is Result.Error -> {
             Column(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "${(resources.value as Resource.Error<List<UrbanAreaInfo>>).message}")
+                Text(text = "${(result.value as Result.Error<List<UrbanAreaInfo>>).message}")
                 Button(
                     onClick = { vm.getUrbanAreas() }) {
                     Text(text = "TRY AGAIN")
