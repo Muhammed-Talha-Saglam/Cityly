@@ -102,7 +102,6 @@ fun ItemCategory(category: Category) {
                 style = MaterialTheme.typography.h6
             )
         }
-
     }
 }
 

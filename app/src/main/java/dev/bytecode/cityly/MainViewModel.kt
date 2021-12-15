@@ -47,9 +47,9 @@ class MainViewModel @Inject constructor(
                     listOfUrbanAreaNamesHrefs[uaItem.name] = href
 
                 }
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(1))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(2))
+//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
+//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(1))
+//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(2))
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(3))
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
@@ -66,6 +66,8 @@ class MainViewModel @Inject constructor(
         val urbanAreaInfo = urbanAreasService.getUrbanAreaInfo(name)
         urbanAreaInfo.salaries = urbanAreasService.getUrbanAreaSalaries(name)
         urbanAreaInfo.scores = urbanAreasService.getUrbanAreaScores(name)
+        urbanAreaInfo.imgUrl = urbanAreasService.getUrbanAreaImage(name).photos[0].image.mobile
+        Log.d("getUrbanInfo", urbanAreaInfo.imgUrl)
         listOfUrbanAreaInfo.add(urbanAreaInfo)
     }
 }

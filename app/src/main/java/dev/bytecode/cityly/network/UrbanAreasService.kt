@@ -1,9 +1,6 @@
 package dev.bytecode.cityly.network
 
-import dev.bytecode.cityly.model.Salaries
-import dev.bytecode.cityly.model.Scores
-import dev.bytecode.cityly.model.UrbanAreaInfo
-import dev.bytecode.cityly.model.UrbanAreas
+import dev.bytecode.cityly.model.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -19,4 +16,7 @@ interface UrbanAreasService {
 
     @GET(Constants.PATH_URBAN_AREA_INFO+"{name}/scores/")
     suspend fun getUrbanAreaScores(@Path("name") name: String): Scores
+
+    @GET(Constants.PATH_URBAN_AREA_INFO+"{name}/images/")
+    suspend fun getUrbanAreaImage(@Path("name") name: String): Photos
 }

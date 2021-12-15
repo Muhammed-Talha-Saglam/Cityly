@@ -12,7 +12,8 @@ data class UrbanAreaInfo (
     val fullName: String,
 
     var salaries: Salaries,
-    var scores: Scores
+    var scores: Scores,
+    var imgUrl: String
 ) {
     fun toJson(): String? {
       return Gson().toJson(this)
