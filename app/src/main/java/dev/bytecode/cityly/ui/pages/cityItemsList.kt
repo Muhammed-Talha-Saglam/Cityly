@@ -1,8 +1,9 @@
-package dev.bytecode.cityly.ui.theme.components
+package dev.bytecode.cityly.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -11,6 +12,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import dev.bytecode.cityly.MainViewModel
 import dev.bytecode.cityly.model.Result
@@ -20,6 +22,7 @@ import dev.bytecode.cityly.model.UrbanAreaInfo
 fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
 
     val result = vm.result.observeAsState()
+    val listState = rememberLazyListState()
 
     when (result.value) {
         is Result.Loading -> {
@@ -28,13 +31,12 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
             }
         }
         is Result.Success -> {
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(Dp(10f))) {
+            LazyColumn(Modifier.fillMaxSize(), state = listState, contentPadding = PaddingValues(Dp(10f)), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 items(
                     (result.value as Result.Success<List<UrbanAreaInfo>>).data!!,
                     key = { city -> city.fullName }) { city ->
                     CityItem(city, navController, vm)
                 }
-
             }
         }
         is Result.Error -> {

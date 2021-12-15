@@ -47,12 +47,12 @@ class MainViewModel @Inject constructor(
                     listOfUrbanAreaNamesHrefs[uaItem.name] = href
 
                 }
-//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
-//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(1))
-//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(2))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(3))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
+                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
+                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(1))
+                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(2))
+//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(3))
+//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
+//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
                 result.value = Result.Success(listOfUrbanAreaInfo)
             } catch (e: Error) {
                 result.value = Result.Error("Error while fetching from api")

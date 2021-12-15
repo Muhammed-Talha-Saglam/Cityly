@@ -1,4 +1,4 @@
-package dev.bytecode.cityly.ui.theme.components
+package dev.bytecode.cityly.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -55,7 +55,7 @@ fun cityItemDetails(vm: MainViewModel) {
             items(vm.selectedUrbanAreaInfo!!.salaries.salaries) { salary ->
                 Column(
                     modifier = Modifier
-                        .background(Color.Blue)
+                        .background(color = MaterialTheme.colors.surface)
                         .padding(Dp(2f))
                 ) {
                     Text(text = salary.job.title, style = MaterialTheme.typography.body1)
@@ -80,7 +80,7 @@ fun ItemCategory(category: Category) {
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(topStart = 20f, topEnd = 20f))
-            .background(color = Color.DarkGray)
+            .background(color = MaterialTheme.colors.surface)
             .drawBehind {
                 drawLine(
                     HexToJetpackColor.getColor(category.color),

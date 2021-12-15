@@ -1,4 +1,4 @@
-package dev.bytecode.cityly.ui.theme.components
+package dev.bytecode.cityly.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

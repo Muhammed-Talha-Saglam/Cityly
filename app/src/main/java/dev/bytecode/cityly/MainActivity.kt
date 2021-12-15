@@ -12,21 +12,26 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.bytecode.cityly.ui.components.cityItemDetails
+import dev.bytecode.cityly.ui.components.cityItemsList
+import dev.bytecode.cityly.ui.components.drawerContent
 import dev.bytecode.cityly.ui.theme.CitylyTheme
-import dev.bytecode.cityly.ui.theme.components.cityItemDetails
-import dev.bytecode.cityly.ui.theme.components.cityItemsList
-import dev.bytecode.cityly.ui.theme.components.drawerContent
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -60,28 +65,33 @@ fun HomePage() {
             TopAppBar(
                 title = {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Icon(imageVector = Icons.Default.Menu,
-                            contentDescription = null,
-                            modifier = Modifier.clickable { scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } })
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = "menu", tint = Color.White, modifier = Modifier.clickable { scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } })
                         Text(text = "City.Ly", textAlign = TextAlign.Center)
-                        Icon(imageVector = Icons.Default.Info, contentDescription = null, modifier = Modifier.padding(end = Dp(4f)))
+                        Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = Color.White, modifier = Modifier.padding(end = Dp(6f)))
                     }
                 },
             )
         },
         drawerContent = { drawerContent() },
-//        floatingActionButton = {
-//            FloatingActionButton(onClick = { }) {
-//                Icon(imageVector = Icons.Default.AddCircle, contentDescription = null)
-//            }
-//        }
-
+        floatingActionButton = {
+            FloatingActionButton(onClick = {}) {
+                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+            }
+        },
     ) {
         NavHost(navController = navController, startDestination = "cityItemsList") {
-            composable("cityItemsList") {cityItemsList( vm = vm,navController =  navController)}
-            composable("cityItemDetails") {cityItemDetails(vm)}
+            composable("cityItemsList") { cityItemsList( vm = vm,navController =  navController) }
+            composable("cityItemDetails") { cityItemDetails(vm) }
+        }
+    }
+
+    val text = buildAnnotatedString {
+        withStyle(SpanStyle(Color.Red)) {
+            append("red text")
+        }
+        withStyle(SpanStyle(Color.Yellow)) {
+            append("yellow text")
         }
     }
 
 }
-
