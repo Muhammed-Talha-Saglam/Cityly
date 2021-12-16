@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import dev.bytecode.cityly.MainViewModel
-import dev.bytecode.cityly.model.Result
-import dev.bytecode.cityly.model.UrbanAreaInfo
+import dev.bytecode.cityly.viewModels.MainViewModel
+import dev.bytecode.cityly.data.model.Result
+import dev.bytecode.cityly.data.model.UrbanAreaInfo
 
 @Composable
 fun cityItemsList(vm: MainViewModel, navController: NavHostController) {

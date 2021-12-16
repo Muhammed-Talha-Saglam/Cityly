@@ -10,6 +10,7 @@ import dev.bytecode.cityly.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+    defaultFontFamily = FontFamily(Font(R.font.montserrat_regular)),
     body1 = TextStyle(
         fontFamily = FontFamily(Font(R.font.montserrat_regular)),
         fontWeight = FontWeight.Bold,

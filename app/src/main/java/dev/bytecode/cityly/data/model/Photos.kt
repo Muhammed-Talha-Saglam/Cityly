@@ -1,3 +1,3 @@
-package dev.bytecode.cityly.model
+package dev.bytecode.cityly.data.model
 
 data class Photos(val photos: List<Photo>)

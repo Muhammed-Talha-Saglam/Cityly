@@ -1,4 +1,4 @@
-package dev.bytecode.cityly.model
+package dev.bytecode.cityly.data.model
 
 data class UaItem (
     val href: String,

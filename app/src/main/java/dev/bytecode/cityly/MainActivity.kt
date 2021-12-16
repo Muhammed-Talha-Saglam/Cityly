@@ -18,10 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -32,7 +29,9 @@ import dev.bytecode.cityly.ui.components.cityItemDetails
 import dev.bytecode.cityly.ui.components.cityItemsList
 import dev.bytecode.cityly.ui.components.drawerContent
 import dev.bytecode.cityly.ui.theme.CitylyTheme
+import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -41,9 +40,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             CitylyTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    HomePage()
-                }
+                HomePage()
+
             }
         }
     }
@@ -79,19 +77,16 @@ fun HomePage() {
             }
         },
     ) {
-        NavHost(navController = navController, startDestination = "cityItemsList") {
-            composable("cityItemsList") { cityItemsList( vm = vm,navController =  navController) }
-            composable("cityItemDetails") { cityItemDetails(vm) }
+        NavHost(navController = navController, startDestination = Routes.CITY_ITEM_LIST) {
+            composable(Routes.CITY_ITEM_LIST) { cityItemsList( vm = vm,navController =  navController) }
+            composable(Routes.CITY_ITEM_DETAILS) { cityItemDetails(vm) }
         }
     }
+}
 
-    val text = buildAnnotatedString {
-        withStyle(SpanStyle(Color.Red)) {
-            append("red text")
-        }
-        withStyle(SpanStyle(Color.Yellow)) {
-            append("yellow text")
-        }
+class Routes {
+    companion object {
+        val CITY_ITEM_LIST = "cityItemsList"
+        val CITY_ITEM_DETAILS = "cityItemDetails"
     }
-
 }

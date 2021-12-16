@@ -1,4 +1,4 @@
-package dev.bytecode.cityly.model
+package dev.bytecode.cityly.data.model
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -21,7 +21,7 @@ data class UrbanAreaInfo (
 
     companion object {
         fun fromJson(json: String): UrbanAreaInfo? {
-            return Gson().fromJson(json,UrbanAreaInfo::class.java)
+            return Gson().fromJson(json, UrbanAreaInfo::class.java)
         }
     }
 }

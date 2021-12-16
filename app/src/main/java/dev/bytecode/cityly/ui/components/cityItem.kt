@@ -18,19 +18,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import dev.bytecode.cityly.MainViewModel
+import dev.bytecode.cityly.viewModels.MainViewModel
 import dev.bytecode.cityly.R
-import dev.bytecode.cityly.model.UrbanAreaInfo
+import dev.bytecode.cityly.Routes
+import dev.bytecode.cityly.data.model.UrbanAreaInfo
 import kotlin.math.roundToInt
 
 @Composable
 fun CityItem(urbanAreaInfo: UrbanAreaInfo, navController: NavHostController, vm: MainViewModel) {
 
+
     Column(
         Modifier
             .clickable {
                 vm.selectedUrbanAreaInfo = urbanAreaInfo
-                navController.navigate("cityItemDetails")
+                navController.navigate(Routes.CITY_ITEM_DETAILS)
             }
             .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(10f))
             .padding(
@@ -73,6 +75,7 @@ fun CityItem(urbanAreaInfo: UrbanAreaInfo, navController: NavHostController, vm:
             style = MaterialTheme.typography.body1
         )
     }
+
 
 }
 

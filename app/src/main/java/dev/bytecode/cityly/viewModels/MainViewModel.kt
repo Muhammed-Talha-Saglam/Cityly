@@ -1,4 +1,4 @@
-package dev.bytecode.cityly
+package dev.bytecode.cityly.viewModels
 
 import android.app.Application
 import android.util.Log
@@ -6,9 +6,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.bytecode.cityly.model.Result
-import dev.bytecode.cityly.model.UrbanAreaInfo
-import dev.bytecode.cityly.network.UrbanAreasService
+import dev.bytecode.cityly.data.model.Result
+import dev.bytecode.cityly.data.model.UrbanAreaInfo
+import dev.bytecode.cityly.data.network.UrbanAreasService
 import dev.bytecode.cityly.utilities.NetworkUtils
 import kotlinx.coroutines.launch
 import javax.inject.Inject

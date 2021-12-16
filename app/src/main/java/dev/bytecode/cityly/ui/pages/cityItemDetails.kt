@@ -18,8 +18,8 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import dev.bytecode.cityly.MainViewModel
-import dev.bytecode.cityly.model.Category
+import dev.bytecode.cityly.viewModels.MainViewModel
+import dev.bytecode.cityly.data.model.Category
 import dev.bytecode.cityly.utilities.HexToJetpackColor
 
 @Composable

@@ -1,4 +1,4 @@
-package dev.bytecode.cityly.model
+package dev.bytecode.cityly.data.model
 
 sealed class Result<T>(val data: T? = null, val message: String? = null) {
     class Loading<T>(data: T? = null): Result<T>(data)
