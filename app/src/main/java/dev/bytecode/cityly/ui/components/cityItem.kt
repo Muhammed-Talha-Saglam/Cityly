@@ -15,13 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import dev.bytecode.cityly.viewModels.MainViewModel
 import dev.bytecode.cityly.R
 import dev.bytecode.cityly.Routes
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
+import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlin.math.roundToInt
 
 @Composable
@@ -31,7 +32,7 @@ fun CityItem(urbanAreaInfo: UrbanAreaInfo, navController: NavHostController, vm:
     Column(
         Modifier
             .clickable {
-                vm.selectedUrbanAreaInfo = urbanAreaInfo
+                vm.selectedUrbanAreaInfo.value = urbanAreaInfo
                 navController.navigate(Routes.CITY_ITEM_DETAILS)
             }
             .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(10f))
@@ -59,7 +60,7 @@ fun CityItem(urbanAreaInfo: UrbanAreaInfo, navController: NavHostController, vm:
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = urbanAreaInfo.fullName)
+            Text(text = urbanAreaInfo.fullName, style = MaterialTheme.typography.body1.copy(color = Color.Cyan), textDecoration = TextDecoration.Underline)
             Spacer(
                 modifier = Modifier
                     .height(Dp(1f))

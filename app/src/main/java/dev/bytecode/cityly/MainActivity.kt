@@ -12,7 +12,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -50,7 +49,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HomePage() {
 
-   // val vm = viewModel<MainViewModel>()
     val vm: MainViewModel = hiltViewModel()
 
     val scaffoldState = rememberScaffoldState()
@@ -71,11 +69,11 @@ fun HomePage() {
             )
         },
         drawerContent = { drawerContent() },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
-            }
-        },
+//        floatingActionButton = {
+//            FloatingActionButton(onClick = {}) {
+//                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+//            }
+//        },
     ) {
         NavHost(navController = navController, startDestination = Routes.CITY_ITEM_LIST) {
             composable(Routes.CITY_ITEM_LIST) { cityItemsList( vm = vm,navController =  navController) }

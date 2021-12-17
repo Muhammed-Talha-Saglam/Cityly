@@ -2,6 +2,7 @@ package dev.bytecode.cityly.viewModels
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,9 +21,9 @@ class MainViewModel @Inject constructor(
 ) : AndroidViewModel(app) {
     val TAG = "MainViewModel"
 
-    val listOfUrbanAreaNamesHrefs = mutableMapOf<String, String>()
+    private val listOfUrbanAreaNamesHrefs = mutableMapOf<String, String>()
     val listOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
-    var selectedUrbanAreaInfo: UrbanAreaInfo? = null
+    var selectedUrbanAreaInfo = mutableStateOf<UrbanAreaInfo?>(null)
 
     var result = MutableLiveData<Result<List<UrbanAreaInfo>>>()
 
@@ -38,6 +39,7 @@ class MainViewModel @Inject constructor(
                 result.value = Result.Error("No Network Connection")
                 return@launch
             }
+
             try {
                 val urbanAreas = urbanAreasService.getUrbanAreas()
                 urbanAreas.links.uaItem.forEach { uaItem ->
@@ -47,12 +49,12 @@ class MainViewModel @Inject constructor(
                     listOfUrbanAreaNamesHrefs[uaItem.name] = href
 
                 }
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
+  //              getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(1))
                 getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(2))
 //                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(3))
-//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
-//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
+                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
+                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
                 result.value = Result.Success(listOfUrbanAreaInfo)
             } catch (e: Error) {
                 result.value = Result.Error("Error while fetching from api")

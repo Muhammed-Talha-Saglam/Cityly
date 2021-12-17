@@ -17,6 +17,12 @@ val Typography = Typography(
         fontSize = 15.sp,
         color = White,
     ),
+    body2 = TextStyle(
+        fontFamily = FontFamily(Font(R.font.montserrat_regular)),
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        color = White,
+    ),
     h6 = TextStyle(
         fontFamily = FontFamily(Font(R.font.montserrat_regular)),
         fontWeight = FontWeight.Bold,
