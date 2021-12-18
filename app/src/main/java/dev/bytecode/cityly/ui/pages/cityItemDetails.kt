@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,16 +31,20 @@ import dev.bytecode.cityly.data.model.Salary
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
 import dev.bytecode.cityly.utilities.HexToJetpackColor
 import dev.bytecode.cityly.viewModels.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun cityItemDetails(vm: MainViewModel) {
 
     val selectedCity by vm.selectedUrbanAreaInfo
+    val verticalScrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(verticalScrollState)
             .padding(Dp(10f)), verticalArrangement = Arrangement.spacedBy(Dp(25f))
     ) {
         Image(
@@ -89,7 +94,7 @@ fun cityItemDetails(vm: MainViewModel) {
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(5f))) {
             items(vm.listOfUrbanAreaInfo) { urbanAreaInfo ->
                 if (urbanAreaInfo != selectedCity)
-                ItemOtherCity(urbanAreaInfo, vm)
+                ItemOtherCity(urbanAreaInfo, vm, verticalScrollState, scope)
             }
         }
 
@@ -149,8 +154,23 @@ fun ItemJob(salary: Salary) {
 }
 
 @Composable
-fun ItemOtherCity(urbanAreaInfo: UrbanAreaInfo, vm: MainViewModel) {
-    Column(modifier = Modifier.width(150.dp).background(MaterialTheme.colors.surface, shape = RoundedCornerShape(10.dp)).clickable { vm.selectedUrbanAreaInfo.value = urbanAreaInfo }.padding(12.dp),) {
+fun ItemOtherCity(
+    urbanAreaInfo: UrbanAreaInfo,
+    vm: MainViewModel,
+    verticalScrollState: ScrollState,
+    scope: CoroutineScope
+) {
+
+    Column(modifier = Modifier
+        .width(150.dp)
+        .background(MaterialTheme.colors.surface, shape = RoundedCornerShape(10.dp))
+        .clickable {
+            vm.selectedUrbanAreaInfo.value = urbanAreaInfo
+            scope.launch {
+                verticalScrollState.animateScrollTo(0)
+            }
+        }
+        .padding(12.dp),) {
         Image(
             painter = rememberImagePainter(
                 data = urbanAreaInfo.imgUrl
