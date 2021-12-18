@@ -3,6 +3,7 @@ package dev.bytecode.cityly
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -31,7 +32,7 @@ import dev.bytecode.cityly.ui.theme.CitylyTheme
 import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlinx.coroutines.launch
 
-
+@ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun HomePage() {
 
@@ -69,11 +71,6 @@ fun HomePage() {
             )
         },
         drawerContent = { drawerContent() },
-//        floatingActionButton = {
-//            FloatingActionButton(onClick = {}) {
-//                Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
-//            }
-//        },
     ) {
         NavHost(navController = navController, startDestination = Routes.CITY_ITEM_LIST) {
             composable(Routes.CITY_ITEM_LIST) { cityItemsList( vm = vm,navController =  navController) }

@@ -1,5 +1,6 @@
 package dev.bytecode.cityly.ui.components
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -167,7 +168,7 @@ fun ItemOtherCity(
         .clickable {
             vm.selectedUrbanAreaInfo.value = urbanAreaInfo
             scope.launch {
-                verticalScrollState.animateScrollTo(0)
+                verticalScrollState.animateScrollTo(0, tween(500))
             }
         }
         .padding(12.dp),) {
