@@ -11,7 +11,7 @@ import dev.bytecode.cityly.data.model.Result
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
 import dev.bytecode.cityly.data.network.UrbanAreasService
 import dev.bytecode.cityly.utilities.NetworkUtils
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,12 +49,15 @@ class MainViewModel @Inject constructor(
                     listOfUrbanAreaNamesHrefs[uaItem.name] = href
 
                 }
-  //              getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(0))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(1))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(2))
-//                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(3))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(4))
-                getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(5))
+
+                val deferred = async {
+                    repeat(6) { i ->
+                        async {
+                            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(i))
+                        }
+                    }
+                }
+                awaitAll(deferred)
                 result.value = Result.Success(listOfUrbanAreaInfo)
             } catch (e: Error) {
                 result.value = Result.Error("Error while fetching from api")
@@ -69,7 +72,6 @@ class MainViewModel @Inject constructor(
         urbanAreaInfo.salaries = urbanAreasService.getUrbanAreaSalaries(name)
         urbanAreaInfo.scores = urbanAreasService.getUrbanAreaScores(name)
         urbanAreaInfo.imgUrl = urbanAreasService.getUrbanAreaImage(name).photos[0].image.mobile
-        Log.d("getUrbanInfo", urbanAreaInfo.imgUrl)
         listOfUrbanAreaInfo.add(urbanAreaInfo)
     }
 }

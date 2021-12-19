@@ -93,9 +93,9 @@ fun cityItemDetails(vm: MainViewModel) {
 
         Text(text = "Other cities that you may like", style = MaterialTheme.typography.h6.copy(color = Color.Cyan), textDecoration = TextDecoration.Underline)
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(5f))) {
-            items(vm.listOfUrbanAreaInfo) { urbanAreaInfo ->
+            items(vm.listOfUrbanAreaInfo, key = {it.fullName}) { urbanAreaInfo ->
                 if (urbanAreaInfo != selectedCity)
-                ItemOtherCity(urbanAreaInfo, vm, verticalScrollState, scope)
+                    ItemOtherCity(urbanAreaInfo, vm, verticalScrollState, scope)
             }
         }
 

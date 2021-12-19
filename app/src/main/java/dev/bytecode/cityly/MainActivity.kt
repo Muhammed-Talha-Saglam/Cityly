@@ -77,6 +77,7 @@ fun HomePage() {
             composable(Routes.CITY_ITEM_DETAILS) { cityItemDetails(vm) }
         }
     }
+
 }
 
 class Routes {
