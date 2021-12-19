@@ -9,14 +9,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bytecode.cityly.data.model.Result
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
-import dev.bytecode.cityly.data.network.UrbanAreasService
+import dev.bytecode.cityly.data.network.UrbanAreaService
 import dev.bytecode.cityly.utilities.NetworkUtils
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val urbanAreasService: UrbanAreasService,
+    private val urbanAreaService: UrbanAreaService,
     app: Application
 ) : AndroidViewModel(app) {
     val TAG = "MainViewModel"
@@ -41,14 +41,17 @@ class MainViewModel @Inject constructor(
             }
 
             try {
-                val urbanAreas = urbanAreasService.getUrbanAreas()
-                urbanAreas.links.uaItem.forEach { uaItem ->
+                // Get urban area href urls
+                val urbanAreas = urbanAreaService.getAllUrbanAreas()
+                urbanAreas!!.links.uaItem.forEach { uaItem ->
                     val startIndex = uaItem.href.indexOfLast { it == ':' }
                     val endIndex = uaItem.href.length - 1
                     val href = uaItem.href.substring(startIndex + 1, endIndex)
                     listOfUrbanAreaNamesHrefs[uaItem.name] = href
 
                 }
+
+                // Launch all urban area requests in parallel for faster UX
                 val job = launch {
                     repeat(6) { i ->
                         launch {
@@ -56,17 +59,9 @@ class MainViewModel @Inject constructor(
                         }
                     }
                 }
+
+                // Wait until all request calls finish
                 job.join()
-
-//                val deferred = async {
-//                    repeat(6) { i ->
-//                        launch {
-//                            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(i))
-//                        }
-//                    }
-//                }
-//                awaitAll(deferred)
-
                 result.value = Result.Success(listOfUrbanAreaInfo)
             } catch (e: Error) {
                 result.value = Result.Error("Error while fetching from api")
@@ -77,11 +72,13 @@ class MainViewModel @Inject constructor(
     }
 
     suspend fun getUrbanInfo(name: String)  {
-
-        val urbanAreaInfo = urbanAreasService.getUrbanAreaInfo(name)
-        urbanAreaInfo.salaries = urbanAreasService.getUrbanAreaSalaries(name)
-        urbanAreaInfo.scores = urbanAreasService.getUrbanAreaScores(name)
-        urbanAreaInfo.imgUrl = urbanAreasService.getUrbanAreaImage(name).photos[0].image.mobile
-        listOfUrbanAreaInfo.add(urbanAreaInfo)
+        Log.d("getUrbanInfo", name)
+        val urbanAreaInfo = urbanAreaService.getUrbanAreaInfo(name)
+        urbanAreaInfo?.salaries = urbanAreaService.getUrbanAreaSalaries(name)
+        urbanAreaInfo?.scores = urbanAreaService.getUrbanAreaScores(name)
+        urbanAreaInfo?.imgUrl = urbanAreaService.getUrbanAreaImage(name)?.photos?.get(0)?.image?.mobile
+        urbanAreaInfo?.let {
+            listOfUrbanAreaInfo.add(urbanAreaInfo)
+        }
     }
 }

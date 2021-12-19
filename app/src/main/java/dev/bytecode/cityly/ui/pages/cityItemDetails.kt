@@ -187,7 +187,7 @@ fun ItemOtherCity(
         )
 
         Text(text = urbanAreaInfo.fullName, style = MaterialTheme.typography.body1, color = Color.Red)
-        Text(text = urbanAreaInfo.scores.summary.replace("  ", "").replace("\n", "")
+        Text(text = urbanAreaInfo.scores!!.summary.replace("  ", "").replace("\n", "")
             .replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", ""), style = MaterialTheme.typography.body2, maxLines = 2, overflow = TextOverflow.Ellipsis)
 
     }

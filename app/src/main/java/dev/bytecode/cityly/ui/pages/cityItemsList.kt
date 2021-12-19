@@ -51,6 +51,7 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
                 contentPadding = PaddingValues(Dp(10f)),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+
                 itemsIndexed(
                     items = (result.value as Result.Success<List<UrbanAreaInfo>>).data!!,
                     key = { i, city -> city.fullName }
@@ -82,8 +83,9 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
 fun CityItem(
     urbanAreaInfo: UrbanAreaInfo,
     navController: NavHostController,
-    vm: MainViewModel
+    vm: MainViewModel,
 ) {
+
     Column(
         Modifier
             .clickable {
@@ -126,11 +128,11 @@ fun CityItem(
                     .weight(2f)
             )
             Icon(imageVector = Icons.Default.Star, tint = Color.Yellow, contentDescription = "star")
-            Text(text = urbanAreaInfo.scores.teleportCityScore.roundToInt().toString())
+            Text(text = urbanAreaInfo.scores?.teleportCityScore?.roundToInt().toString())
         }
         Spacer(modifier = Modifier.height(Dp(4f)))
         Text(
-            text = urbanAreaInfo.scores.summary.replace("  ", "").replace("\n", "")
+            text = urbanAreaInfo.scores?.summary?.replace("  ", "")!!.replace("\n", "")
                 .replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", ""),
             style = MaterialTheme.typography.body1,
             maxLines = 2,

@@ -1,9 +1,11 @@
 package dev.bytecode.cityly.data.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Salary(
     val job: Job,
-    @SerializedName("salary_percentiles")
+    @SerialName("salary_percentiles")
     val salaryPercentiles: SalaryPercentiles
 )
