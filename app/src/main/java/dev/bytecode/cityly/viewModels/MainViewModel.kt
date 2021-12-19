@@ -49,15 +49,24 @@ class MainViewModel @Inject constructor(
                     listOfUrbanAreaNamesHrefs[uaItem.name] = href
 
                 }
-
-                val deferred = async {
+                val job = launch {
                     repeat(6) { i ->
-                        async {
+                        launch {
                             getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(i))
                         }
                     }
                 }
-                awaitAll(deferred)
+                job.join()
+
+//                val deferred = async {
+//                    repeat(6) { i ->
+//                        launch {
+//                            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(i))
+//                        }
+//                    }
+//                }
+//                awaitAll(deferred)
+
                 result.value = Result.Success(listOfUrbanAreaInfo)
             } catch (e: Error) {
                 result.value = Result.Error("Error while fetching from api")
@@ -67,7 +76,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun getUrbanInfo(name: String) {
+    suspend fun getUrbanInfo(name: String)  {
+
         val urbanAreaInfo = urbanAreasService.getUrbanAreaInfo(name)
         urbanAreaInfo.salaries = urbanAreasService.getUrbanAreaSalaries(name)
         urbanAreaInfo.scores = urbanAreasService.getUrbanAreaScores(name)
