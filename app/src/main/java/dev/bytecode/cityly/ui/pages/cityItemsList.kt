@@ -3,6 +3,7 @@ package dev.bytecode.cityly.ui.components
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,16 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import dev.bytecode.cityly.R
 import dev.bytecode.cityly.Routes
 import dev.bytecode.cityly.data.model.Result
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
+import dev.bytecode.cityly.ui.theme.Orange
 import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlin.math.roundToInt
 
@@ -88,11 +90,13 @@ fun CityItem(
 
     Column(
         Modifier
+            .padding(5.dp)
             .clickable {
                 vm.selectedUrbanAreaInfo.value = urbanAreaInfo
                 navController.navigate(Routes.CITY_ITEM_DETAILS)
             }
             .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(10f))
+            .border(color = Color.Gray, width = 1.dp, shape = RoundedCornerShape(10f))
             .padding(
                 Dp(4f)
             )) {
@@ -113,28 +117,28 @@ fun CityItem(
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal =  10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = urbanAreaInfo.fullName,
-                style = MaterialTheme.typography.body1.copy(color = Color.Cyan),
-                textDecoration = TextDecoration.Underline
-            )
+                style = MaterialTheme.typography.body1.copy(Color.Black, fontSize = 18.sp),
+                )
             Spacer(
                 modifier = Modifier
                     .height(Dp(1f))
                     .weight(2f)
             )
-            Icon(imageVector = Icons.Default.Star, tint = Color.Yellow, contentDescription = "star")
-            Text(text = urbanAreaInfo.scores?.teleportCityScore?.roundToInt().toString())
+            Icon(imageVector = Icons.Default.Star, tint = Orange, contentDescription = "star")
+            Text(text = urbanAreaInfo.scores?.teleportCityScore?.roundToInt().toString(), color = Color.Black)
         }
         Spacer(modifier = Modifier.height(Dp(4f)))
         Text(
             text = urbanAreaInfo.scores?.summary?.replace("  ", "")!!.replace("\n", "")
                 .replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", ""),
-            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding( horizontal = 10.dp),
+            style = MaterialTheme.typography.body2.copy(Color.Black, fontSize = 16.sp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )

@@ -19,16 +19,13 @@ val Typography = Typography(
     ),
     body2 = TextStyle(
         fontFamily = FontFamily(Font(R.font.montserrat_regular)),
-        fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         color = White,
     ),
     h6 = TextStyle(
         fontFamily = FontFamily(Font(R.font.montserrat_regular)),
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
+        fontSize = 22.sp,
         color = White,
     ),
-
-
 )

@@ -4,22 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,8 +27,9 @@ import dev.bytecode.cityly.ui.components.cityItemDetails
 import dev.bytecode.cityly.ui.components.cityItemsList
 import dev.bytecode.cityly.ui.components.drawerContent
 import dev.bytecode.cityly.ui.theme.CitylyTheme
+import dev.bytecode.cityly.ui.theme.Purple
+import dev.bytecode.cityly.ui.theme.Yellow
 import dev.bytecode.cityly.viewModels.MainViewModel
-import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -61,11 +60,10 @@ fun HomePage() {
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
+                backgroundColor = Purple,
                 title = {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Icon(imageVector = Icons.Default.Menu, contentDescription = "menu", tint = Color.White, modifier = Modifier.clickable { scope.launch { scaffoldState.drawerState.apply { if (isClosed) open() else close() } } })
-                        Text(text = "City.Ly", textAlign = TextAlign.Center)
-                        Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = Color.White, modifier = Modifier.padding(end = Dp(6f)))
+                    Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = "CITY.LY", textAlign = TextAlign.Center, color = Yellow, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     }
                 },
             )

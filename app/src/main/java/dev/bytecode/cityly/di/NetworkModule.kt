@@ -22,10 +22,13 @@ object NetworkModule {
     fun provideHttpClient(): HttpClient {
         return HttpClient(CIO) {
             install(Logging) {
+                logger = Logger.ANDROID
                 level = LogLevel.BODY
             }
             install(JsonFeature) {
-                val json = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+                val json = kotlinx.serialization.json.Json {
+                    ignoreUnknownKeys = true
+                }
                 serializer = KotlinxSerializer(json)
             }
         }

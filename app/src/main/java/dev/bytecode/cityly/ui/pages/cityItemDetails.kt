@@ -25,11 +25,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import dev.bytecode.cityly.R
 import dev.bytecode.cityly.data.model.Category
 import dev.bytecode.cityly.data.model.Salary
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
+import dev.bytecode.cityly.ui.theme.Orange
+import dev.bytecode.cityly.ui.theme.Purple
 import dev.bytecode.cityly.utilities.HexToJetpackColor
 import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -67,15 +70,15 @@ fun cityItemDetails(vm: MainViewModel) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "${selectedCity?.fullName}",
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h6.copy(Color.Black, fontSize = 25.sp)
             )
             Text(
                 text = "${selectedCity?.continent}",
-                style = MaterialTheme.typography.h6.copy(color = Color.Green)
+                style = MaterialTheme.typography.body2.copy(fontSize = 18.sp, color = Color.Black)
             )
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Scores", style = MaterialTheme.typography.h6.copy(color = Color.Cyan), textDecoration = TextDecoration.Underline)
+            Text(text = "Scores", style = MaterialTheme.typography.h6.copy(color = Color.Black))
             Text(
                 text = "Overall Score: ${selectedCity?.scores?.teleportCityScore?.toInt()}",
                 style = MaterialTheme.typography.h6
@@ -84,14 +87,14 @@ fun cityItemDetails(vm: MainViewModel) {
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(12f))) {
             items(selectedCity?.scores!!.categories) { category -> ItemCategory(category) }
         }
-        Text(text = "Popular Jobs", style = MaterialTheme.typography.h6.copy(color = Color.Cyan), textDecoration = TextDecoration.Underline)
+        Text(text = "Popular Jobs", style = MaterialTheme.typography.h6.copy(color = Color.Black))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(5f))) {
             items(selectedCity?.salaries!!.salaries) { salary ->
                 ItemJob(salary)
             }
         }
 
-        Text(text = "Other cities that you may like", style = MaterialTheme.typography.h6.copy(color = Color.Cyan), textDecoration = TextDecoration.Underline)
+        Text(text = "Other cities that you may like", style = MaterialTheme.typography.h6.copy(color = Color.Black))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(5f))) {
             items(vm.listOfUrbanAreaInfo, key = {it.fullName}) { urbanAreaInfo ->
                 if (urbanAreaInfo != selectedCity)
@@ -108,7 +111,7 @@ fun ItemCategory(category: Category) {
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(topStart = 20f, topEnd = 20f))
-            .background(color = MaterialTheme.colors.surface)
+            .background(color = Purple)
             .drawBehind {
                 drawLine(
                     HexToJetpackColor.getColor(category.color),
@@ -123,7 +126,7 @@ fun ItemCategory(category: Category) {
         Text(text = category.name, style = MaterialTheme.typography.body1)
         Spacer(modifier = Modifier.height(Dp(4f)))
         Row(verticalAlignment = Alignment.Bottom) {
-            Icon(imageVector = Icons.Sharp.Star, contentDescription = "star", tint = Color.Yellow)
+            Icon(imageVector = Icons.Sharp.Star, contentDescription = "star", tint = Orange)
             Spacer(modifier = Modifier.width(Dp(4f)))
             Text(
                 text = "${category.scoreOutOf10.toInt()}",
@@ -137,10 +140,10 @@ fun ItemCategory(category: Category) {
 fun ItemJob(salary: Salary) {
     Column(
         modifier = Modifier
-            .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(12.dp))
+            .background(color = Purple, shape = RoundedCornerShape(12.dp))
             .padding(Dp(10f))
     ) {
-        Text(text = salary.job.title, style = MaterialTheme.typography.h6, color = Color.Red)
+        Text(text = salary.job.title, style = MaterialTheme.typography.h6)
         Spacer(modifier = Modifier.height(Dp(4f)))
         Text(text = "Salary", style = MaterialTheme.typography.body1, textDecoration = TextDecoration.Underline)
         Text(
@@ -164,7 +167,7 @@ fun ItemOtherCity(
 
     Column(modifier = Modifier
         .width(150.dp)
-        .background(MaterialTheme.colors.surface, shape = RoundedCornerShape(10.dp))
+        .background(Purple, shape = RoundedCornerShape(10.dp))
         .clickable {
             vm.selectedUrbanAreaInfo.value = urbanAreaInfo
             scope.launch {
@@ -186,7 +189,7 @@ fun ItemOtherCity(
             contentScale = ContentScale.Fit
         )
 
-        Text(text = urbanAreaInfo.fullName, style = MaterialTheme.typography.body1, color = Color.Red)
+        Text(text = urbanAreaInfo.fullName, style = MaterialTheme.typography.body1)
         Text(text = urbanAreaInfo.scores!!.summary.replace("  ", "").replace("\n", "")
             .replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", ""), style = MaterialTheme.typography.body2, maxLines = 2, overflow = TextOverflow.Ellipsis)
 
