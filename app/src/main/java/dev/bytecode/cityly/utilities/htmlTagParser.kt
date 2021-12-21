@@ -14,3 +14,10 @@ fun HtmlText(html: String, modifier: Modifier = Modifier) {
         update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) }
     )
 }
+
+fun removeTag(text: String?): String {
+    if (text.isNullOrBlank()) return ""
+
+    return text.replace("  ", "").replace("\n", "")
+        .replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", "")
+}

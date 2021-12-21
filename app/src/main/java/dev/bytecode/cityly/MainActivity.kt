@@ -14,6 +14,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,12 +26,13 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bytecode.cityly.ui.components.cityItemDetails
 import dev.bytecode.cityly.ui.components.cityItemsList
-import dev.bytecode.cityly.ui.components.drawerContent
+import dev.bytecode.cityly.ui.pages.Questions
 import dev.bytecode.cityly.ui.theme.CitylyTheme
 import dev.bytecode.cityly.ui.theme.Purple
 import dev.bytecode.cityly.ui.theme.Yellow
 import dev.bytecode.cityly.viewModels.MainViewModel
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -46,6 +48,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun HomePage() {
@@ -68,9 +71,9 @@ fun HomePage() {
                 },
             )
         },
-        drawerContent = { drawerContent() },
     ) {
-        NavHost(navController = navController, startDestination = Routes.CITY_ITEM_LIST) {
+        NavHost(navController = navController, startDestination = Routes.QUESTIONS) {
+            composable(Routes.QUESTIONS) { Questions(vm = vm, navController)}
             composable(Routes.CITY_ITEM_LIST) { cityItemsList( vm = vm,navController =  navController) }
             composable(Routes.CITY_ITEM_DETAILS) { cityItemDetails(vm) }
         }
@@ -80,6 +83,7 @@ fun HomePage() {
 
 class Routes {
     companion object {
+        val QUESTIONS = "questions"
         val CITY_ITEM_LIST = "cityItemsList"
         val CITY_ITEM_DETAILS = "cityItemDetails"
     }

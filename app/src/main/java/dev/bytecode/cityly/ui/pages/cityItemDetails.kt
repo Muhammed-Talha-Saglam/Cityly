@@ -34,6 +34,7 @@ import dev.bytecode.cityly.data.model.UrbanAreaInfo
 import dev.bytecode.cityly.ui.theme.Orange
 import dev.bytecode.cityly.ui.theme.Purple
 import dev.bytecode.cityly.utilities.HexToJetpackColor
+import dev.bytecode.cityly.utilities.removeTag
 import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ fun cityItemDetails(vm: MainViewModel) {
     val selectedCity by vm.selectedUrbanAreaInfo
     val verticalScrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
+
 
     Column(
         modifier = Modifier
@@ -77,11 +79,22 @@ fun cityItemDetails(vm: MainViewModel) {
                 style = MaterialTheme.typography.body2.copy(fontSize = 18.sp, color = Color.Black)
             )
         }
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Summary",
+                style = MaterialTheme.typography.h6.copy(Color.Black, fontSize = 25.sp)
+            )
+            Text(
+                text = removeTag(selectedCity?.scores?.summary),
+                style = MaterialTheme.typography.body2.copy(fontSize = 18.sp, color = Color.Black)
+            )
+        }
+
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text = "Scores", style = MaterialTheme.typography.h6.copy(color = Color.Black))
             Text(
                 text = "Overall Score: ${selectedCity?.scores?.teleportCityScore?.toInt()}",
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h6.copy(color = Color.Black)
             )
         }
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(12f))) {
@@ -190,8 +203,7 @@ fun ItemOtherCity(
         )
 
         Text(text = urbanAreaInfo.fullName, style = MaterialTheme.typography.body1)
-        Text(text = urbanAreaInfo.scores!!.summary.replace("  ", "").replace("\n", "")
-            .replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", ""), style = MaterialTheme.typography.body2, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        Text(text = removeTag(urbanAreaInfo.scores?.summary), style = MaterialTheme.typography.body2, maxLines = 2, overflow = TextOverflow.Ellipsis)
 
     }
 }

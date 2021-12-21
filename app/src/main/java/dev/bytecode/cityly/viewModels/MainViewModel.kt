@@ -21,6 +21,8 @@ class MainViewModel @Inject constructor(
 ) : AndroidViewModel(app) {
     val TAG = "MainViewModel"
 
+    val questionRatingMap = mutableMapOf("Q1" to 1, "Q2" to 1,  "Q3" to 1, "Q4" to 1, "Q5" to 1, "Q6" to 1, "Q7" to 1 )
+
     private val listOfUrbanAreaNamesHrefs = mutableMapOf<String, String>()
     val listOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
     var selectedUrbanAreaInfo = mutableStateOf<UrbanAreaInfo?>(null)
@@ -30,6 +32,11 @@ class MainViewModel @Inject constructor(
     init {
         Log.d(TAG, "init")
         getUrbanAreas()
+    }
+
+    fun updateQuestionRating(question: String, rating: Int) {
+        questionRatingMap[question] = rating
+        Log.d(TAG, questionRatingMap.toString())
     }
 
     fun getUrbanAreas() {
