@@ -21,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import dev.bytecode.cityly.R
@@ -29,6 +28,7 @@ import dev.bytecode.cityly.Routes
 import dev.bytecode.cityly.data.model.Result
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
 import dev.bytecode.cityly.ui.theme.Orange
+import dev.bytecode.cityly.ui.theme.Purple
 import dev.bytecode.cityly.utilities.removeTag
 import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlin.math.roundToInt
@@ -43,7 +43,7 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
     when (result.value) {
         is Result.Loading -> {
             Box(Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = Purple)
             }
         }
         is Result.Success -> {
@@ -68,7 +68,7 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "${(result.value as Result.Error<List<UrbanAreaInfo>>).message}")
+                Text(text = "${(result.value as Result.Error<List<UrbanAreaInfo>>).message}", color = Color.Black)
                 Button(
                     onClick = { vm.getUrbanAreas() }) {
                     Text(text = "TRY AGAIN")
@@ -88,7 +88,7 @@ fun CityItem(
     vm: MainViewModel,
 ) {
 
-    Card {
+    Card(elevation = 5.dp) {
         Column(
             Modifier
                 .padding(5.dp)
@@ -125,7 +125,7 @@ fun CityItem(
             ) {
                 Text(
                     text = urbanAreaInfo.fullName,
-                    style = MaterialTheme.typography.body1.copy(Color.Black, fontSize = 18.sp),
+                    style = MaterialTheme.typography.body1,
                 )
                 Spacer(
                     modifier = Modifier
@@ -139,7 +139,7 @@ fun CityItem(
             Text(
                 text = removeTag(urbanAreaInfo.scores?.summary),
                 modifier = Modifier.padding( horizontal = 10.dp),
-                style = MaterialTheme.typography.body2.copy(Color.Black, fontSize = 16.sp),
+                style = MaterialTheme.typography.body2,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )

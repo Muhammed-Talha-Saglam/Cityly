@@ -4,11 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -16,9 +17,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,7 +29,6 @@ import dev.bytecode.cityly.ui.components.cityItemsList
 import dev.bytecode.cityly.ui.pages.Questions
 import dev.bytecode.cityly.ui.theme.CitylyTheme
 import dev.bytecode.cityly.ui.theme.Purple
-import dev.bytecode.cityly.ui.theme.Yellow
 import dev.bytecode.cityly.viewModels.MainViewModel
 
 @ExperimentalComposeUiApi
@@ -65,8 +64,10 @@ fun HomePage() {
             TopAppBar(
                 backgroundColor = Purple,
                 title = {
-                    Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "CITY.LY", textAlign = TextAlign.Center, color = Yellow, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Row(Modifier.fillMaxSize().padding(vertical = 3.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+//                        Text(text = "CITY.LY", textAlign = TextAlign.Center, style = MaterialTheme.typography.h6.copy(
+//                            Yellow, fontSize = 25.sp))
+                        Image(painter = painterResource(id = R.drawable.app_icon), contentDescription = "app icon" )
                     }
                 },
             )

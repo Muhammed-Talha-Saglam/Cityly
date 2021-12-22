@@ -40,11 +40,13 @@ fun Questions(vm: MainViewModel, navController: NavHostController) {
         }
 
         TextButton(
-            modifier = Modifier.padding(vertical = 15.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(vertical = 15.dp)
+                .fillMaxWidth(),
             onClick = { navController.navigate(Routes.CITY_ITEM_LIST) },
             colors = ButtonDefaults.buttonColors(backgroundColor = Purple)
             ) {
-            Text(text = "OK", fontSize = 20.sp)
+            Text(text = "OK", style = MaterialTheme.typography.h6.copy(Color.White))
         }
     }
 }
@@ -65,7 +67,6 @@ fun ItemQuestion(question: String, star: Int, vm: MainViewModel) {
             })
         }
     }
-
 }
 
 

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="red_200">#fff297a2</color>
-    <color name="red_700">#ffdd0d3c</color>
-    <color name="red_300">#ffea6d7e</color>
     <color name="purple">#FF5D3BBB</color>
-
+    <color name="yellow">#FFFBD30A</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="statusBar">#FF5D3BBB</color>

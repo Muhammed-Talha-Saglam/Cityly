@@ -12,20 +12,17 @@ import dev.bytecode.cityly.R
 val Typography = Typography(
     defaultFontFamily = FontFamily(Font(R.font.montserrat_regular)),
     body1 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.montserrat_regular)),
         fontWeight = FontWeight.Bold,
-        fontSize = 15.sp,
-        color = White,
+        fontSize = 18.sp,
+        color = Black,
     ),
     body2 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.montserrat_regular)),
-        fontSize = 12.sp,
-        color = White,
+        fontSize = 15.sp,
+        color = Black,
     ),
     h6 = TextStyle(
-        fontFamily = FontFamily(Font(R.font.montserrat_regular)),
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        color = White,
+        fontSize = 20.sp,
+        color = Black,
     ),
 )

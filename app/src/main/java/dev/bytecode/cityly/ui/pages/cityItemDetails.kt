@@ -31,8 +31,10 @@ import dev.bytecode.cityly.R
 import dev.bytecode.cityly.data.model.Category
 import dev.bytecode.cityly.data.model.Salary
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
+import dev.bytecode.cityly.ui.theme.Black
 import dev.bytecode.cityly.ui.theme.Orange
 import dev.bytecode.cityly.ui.theme.Purple
+import dev.bytecode.cityly.ui.theme.White
 import dev.bytecode.cityly.utilities.HexToJetpackColor
 import dev.bytecode.cityly.utilities.removeTag
 import dev.bytecode.cityly.viewModels.MainViewModel
@@ -82,7 +84,7 @@ fun cityItemDetails(vm: MainViewModel) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "Summary",
-                style = MaterialTheme.typography.h6.copy(Color.Black, fontSize = 25.sp)
+                style = MaterialTheme.typography.h6.copy(Black)
             )
             Text(
                 text = removeTag(selectedCity?.scores?.summary),
@@ -136,14 +138,14 @@ fun ItemCategory(category: Category) {
             .padding(start = Dp(8f), end = Dp(8f), bottom = Dp(10f))
 
     ) {
-        Text(text = category.name, style = MaterialTheme.typography.body1)
+        Text(text = category.name, style = MaterialTheme.typography.body1.copy(White))
         Spacer(modifier = Modifier.height(Dp(4f)))
         Row(verticalAlignment = Alignment.Bottom) {
             Icon(imageVector = Icons.Sharp.Star, contentDescription = "star", tint = Orange)
             Spacer(modifier = Modifier.width(Dp(4f)))
             Text(
                 text = "${category.scoreOutOf10.toInt()}",
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h6.copy(White)
             )
         }
     }
@@ -156,16 +158,16 @@ fun ItemJob(salary: Salary) {
             .background(color = Purple, shape = RoundedCornerShape(12.dp))
             .padding(Dp(10f))
     ) {
-        Text(text = salary.job.title, style = MaterialTheme.typography.h6)
+        Text(text = salary.job.title, style = MaterialTheme.typography.h6.copy(White))
         Spacer(modifier = Modifier.height(Dp(4f)))
-        Text(text = "Salary", style = MaterialTheme.typography.body1, textDecoration = TextDecoration.Underline)
+        Text(text = "Salary", style = MaterialTheme.typography.body1.copy(White), textDecoration = TextDecoration.Underline)
         Text(
             text = "Median: ${salary.salaryPercentiles.percentile50.toInt()} $",
-            style = MaterialTheme.typography.body2
+            style = MaterialTheme.typography.body2.copy(White)
         )
         Text(
             text = "Max: ${salary.salaryPercentiles.percentile75.toInt()} $",
-            style = MaterialTheme.typography.body2
+            style = MaterialTheme.typography.body2.copy(White)
         )
     }
 }
@@ -202,8 +204,8 @@ fun ItemOtherCity(
             contentScale = ContentScale.Fit
         )
 
-        Text(text = urbanAreaInfo.fullName, style = MaterialTheme.typography.body1)
-        Text(text = removeTag(urbanAreaInfo.scores?.summary), style = MaterialTheme.typography.body2, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        Text(text = urbanAreaInfo.fullName, style = MaterialTheme.typography.body1.copy(White))
+        Text(text = removeTag(urbanAreaInfo.scores?.summary), style = MaterialTheme.typography.body2.copy(White), maxLines = 2, overflow = TextOverflow.Ellipsis)
 
     }
 }
