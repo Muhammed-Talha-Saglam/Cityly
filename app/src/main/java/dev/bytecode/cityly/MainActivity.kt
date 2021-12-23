@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
             CitylyTheme {
                 // A surface container using the 'background' color from the theme
                 HomePage()
-
             }
         }
     }
@@ -65,8 +64,6 @@ fun HomePage() {
                 backgroundColor = Purple,
                 title = {
                     Row(Modifier.fillMaxSize().padding(vertical = 3.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-//                        Text(text = "CITY.LY", textAlign = TextAlign.Center, style = MaterialTheme.typography.h6.copy(
-//                            Yellow, fontSize = 25.sp))
                         Image(painter = painterResource(id = R.drawable.app_icon), contentDescription = "app icon" )
                     }
                 },

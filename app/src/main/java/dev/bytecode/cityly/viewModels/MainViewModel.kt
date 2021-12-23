@@ -6,7 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bytecode.cityly.data.Cities
+import dev.bytecode.cityly.data.model.City
 import dev.bytecode.cityly.data.model.Result
 import dev.bytecode.cityly.data.model.UrbanAreaInfo
 import dev.bytecode.cityly.data.network.UrbanAreaService
@@ -30,8 +34,17 @@ class MainViewModel @Inject constructor(
     var result = MutableLiveData<Result<List<UrbanAreaInfo>>>()
 
     init {
-        Log.d(TAG, "init")
-        getUrbanAreas()
+        viewModelScope.launch {
+            val gson = Gson()
+            val arrayCityType = object : TypeToken<Array<City>>() {}.type
+            val cities: Array<City> = gson.fromJson(Cities.jsonCities, arrayCityType)
+            cities.forEach {
+                Log.d("citiesFromJsom", it.toString())
+            }
+            Log.d("citiesFromJsom", "${cities.size}")
+
+        }
+        //    getUrbanAreas()
     }
 
     fun updateQuestionRating(question: String, rating: Int) {
