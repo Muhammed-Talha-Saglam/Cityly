@@ -1,6 +1,5 @@
 package dev.bytecode.cityly.ui.components
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +32,6 @@ import dev.bytecode.cityly.utilities.removeTag
 import dev.bytecode.cityly.viewModels.MainViewModel
 import kotlin.math.roundToInt
 
-@ExperimentalAnimationApi
 @Composable
 fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
 
@@ -80,7 +78,6 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
 }
 
 
-@ExperimentalAnimationApi
 @Composable
 fun CityItem(
     urbanAreaInfo: UrbanAreaInfo,

@@ -19,5 +19,5 @@ fun removeTag(text: String?): String {
     if (text.isNullOrBlank()) return ""
 
     return text.replace("  ", "").replace("\n", "")
-        .replace("<p>", "").replace("</p>", "").replace("<b>", "").replace("</b>", "")
+        .replace("<br>", "").replace("<p>", "").replace("<i>", "").replace("</p>", "").replace("</i>", "").replace("<b>", "").replace("</b>", "")
 }

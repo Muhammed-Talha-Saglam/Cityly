@@ -17,40 +17,34 @@ import dev.bytecode.cityly.data.network.UrbanAreaService
 import dev.bytecode.cityly.utilities.NetworkUtils
 import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val urbanAreaService: UrbanAreaService,
     app: Application
 ) : AndroidViewModel(app) {
+
     val TAG = "MainViewModel"
 
-    val questionRatingMap = mutableMapOf("Q1" to 1, "Q2" to 1,  "Q3" to 1, "Q4" to 1, "Q5" to 1, "Q6" to 1, "Q7" to 1 )
-
-    private val listOfUrbanAreaNamesHrefs = mutableMapOf<String, String>()
+    val isLoading = mutableStateOf(true)
     val listOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
     var selectedUrbanAreaInfo = mutableStateOf<UrbanAreaInfo?>(null)
+    lateinit var cityHrefs: Array<City>
 
     var result = MutableLiveData<Result<List<UrbanAreaInfo>>>()
 
     init {
         viewModelScope.launch {
+            isLoading.value = true
             val gson = Gson()
             val arrayCityType = object : TypeToken<Array<City>>() {}.type
-            val cities: Array<City> = gson.fromJson(Cities.jsonCities, arrayCityType)
-            cities.forEach {
-                Log.d("citiesFromJsom", it.toString())
-            }
-            Log.d("citiesFromJsom", "${cities.size}")
-
+            cityHrefs = gson.fromJson(Cities.jsonCities, arrayCityType)
+            isLoading.value = false
         }
-        //    getUrbanAreas()
     }
 
-    fun updateQuestionRating(question: String, rating: Int) {
-        questionRatingMap[question] = rating
-        Log.d(TAG, questionRatingMap.toString())
-    }
 
     fun getUrbanAreas() {
         viewModelScope.launch {
@@ -59,23 +53,15 @@ class MainViewModel @Inject constructor(
                 result.value = Result.Error("No Network Connection")
                 return@launch
             }
-
+            listOfUrbanAreaInfo.clear()
             try {
-                // Get urban area href urls
-                val urbanAreas = urbanAreaService.getAllUrbanAreas()
-                urbanAreas!!.links.uaItem.forEach { uaItem ->
-                    val startIndex = uaItem.href.indexOfLast { it == ':' }
-                    val endIndex = uaItem.href.length - 1
-                    val href = uaItem.href.substring(startIndex + 1, endIndex)
-                    listOfUrbanAreaNamesHrefs[uaItem.name] = href
-
-                }
-
-                // Launch all urban area requests in parallel for faster UX
+                // Launch all urban area requests in parallel for faster performance
                 val job = launch {
                     repeat(6) { i ->
                         launch {
-                            getUrbanInfo(listOfUrbanAreaNamesHrefs.values.elementAt(i))
+                            val index = Random.nextInt(cityHrefs.indices)
+                            val href = cityHrefs[index].name.lowercase().replace(" ", "-")
+                            getUrbanInfo(href)
                         }
                     }
                 }

@@ -100,12 +100,17 @@ fun cityItemDetails(vm: MainViewModel) {
             )
         }
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(12f))) {
-            items(selectedCity?.scores!!.categories) { category -> ItemCategory(category) }
+            selectedCity?.scores?.categories?.let { categories ->
+                items(categories) { category -> ItemCategory(category) }
+            }
         }
         Text(text = "Popular Jobs", style = MaterialTheme.typography.h6.copy(color = Color.Black))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(Dp(5f))) {
-            items(selectedCity?.salaries!!.salaries) { salary ->
-                ItemJob(salary)
+            selectedCity?.salaries?.salaries?.let { salaries ->
+                items(salaries) { salary ->
+                    ItemJob(salary)
+                }
+
             }
         }
 
@@ -182,6 +187,7 @@ fun ItemOtherCity(
 
     Column(modifier = Modifier
         .width(150.dp)
+        .fillMaxHeight()
         .background(Purple, shape = RoundedCornerShape(10.dp))
         .clickable {
             vm.selectedUrbanAreaInfo.value = urbanAreaInfo
