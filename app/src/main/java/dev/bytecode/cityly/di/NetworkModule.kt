@@ -39,7 +39,4 @@ object NetworkModule {
     fun provideUrbanAreaService(client: HttpClient): UrbanAreaService {
         return  UrbanAreaServiceImpl(client)
     }
-
-
-
 }

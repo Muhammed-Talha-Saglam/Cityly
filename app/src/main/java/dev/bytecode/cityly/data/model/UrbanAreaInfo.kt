@@ -15,4 +15,3 @@ data class UrbanAreaInfo (
     var scores: Scores? = null,
     var imgUrl: String? = null
 )
-
