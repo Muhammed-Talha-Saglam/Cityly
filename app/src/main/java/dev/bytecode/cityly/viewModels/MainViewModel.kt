@@ -18,7 +18,6 @@ import dev.bytecode.cityly.utilities.NetworkUtils
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.random.Random
-import kotlin.random.nextInt
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -30,9 +29,12 @@ class MainViewModel @Inject constructor(
 
     val isLoading = mutableStateOf(true)
     val listOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
+    val templistOfUrbanAreaInfo = mutableListOf<UrbanAreaInfo>()
+
     var selectedUrbanAreaInfo = mutableStateOf<UrbanAreaInfo?>(null)
     lateinit var cityHrefs: Array<City>
-
+    lateinit var cities: Array<City>
+    var lastIndex = Random.nextInt(250)
     var result = MutableLiveData<Result<List<UrbanAreaInfo>>>()
 
     init {
@@ -41,10 +43,13 @@ class MainViewModel @Inject constructor(
             val gson = Gson()
             val arrayCityType = object : TypeToken<Array<City>>() {}.type
             cityHrefs = gson.fromJson(Cities.jsonCities, arrayCityType)
+            cities = cityHrefs.sortedArrayDescending()
+            cities.forEach {
+                Log.d("citiesfromjson", it.toString())
+            }
             isLoading.value = false
         }
     }
-
 
     fun getUrbanAreas() {
         viewModelScope.launch {
@@ -53,38 +58,49 @@ class MainViewModel @Inject constructor(
                 result.value = Result.Error("No Network Connection")
                 return@launch
             }
-            listOfUrbanAreaInfo.clear()
+            templistOfUrbanAreaInfo.clear()
             try {
                 // Launch all urban area requests in parallel for faster performance
                 val job = launch {
-                    repeat(6) { i ->
+                    for (i in lastIndex..(lastIndex + 4)) {
                         launch {
-                            val index = Random.nextInt(cityHrefs.indices)
-                            val href = cityHrefs[index].name.lowercase().replace(" ", "-")
-                            getUrbanInfo(href)
+                            val href = cities[i].name.lowercase().replace(" ", "-")
+                            val resultScore = cities[i].result
+                            getUrbanInfo(href, resultScore)
                         }
                     }
                 }
 
                 // Wait until all request calls finish
                 job.join()
-                result.value = Result.Success(listOfUrbanAreaInfo)
+                listOfUrbanAreaInfo.addAll(templistOfUrbanAreaInfo)
+                result.value = Result.Success(listOfUrbanAreaInfo.sortedByDescending { it.result })
+                if (lastIndex > cities.size - 5)
+                    lastIndex = 0
+                else
+                    lastIndex += 5
             } catch (e: Error) {
                 result.value = Result.Error("Error while fetching from api")
-
             }
 
         }
     }
 
-    suspend fun getUrbanInfo(name: String)  {
+    suspend fun getUrbanInfo(name: String, result: Double) {
         Log.d("getUrbanInfo", name)
-        val urbanAreaInfo = urbanAreaService.getUrbanAreaInfo(name)
-        urbanAreaInfo?.salaries = urbanAreaService.getUrbanAreaSalaries(name)
-        urbanAreaInfo?.scores = urbanAreaService.getUrbanAreaScores(name)
-        urbanAreaInfo?.imgUrl = urbanAreaService.getUrbanAreaImage(name)?.photos?.get(0)?.image?.mobile
-        urbanAreaInfo?.let {
-            listOfUrbanAreaInfo.add(urbanAreaInfo)
+        try {
+            val urbanAreaInfo = urbanAreaService.getUrbanAreaInfo(name)
+            urbanAreaInfo?.salaries = urbanAreaService.getUrbanAreaSalaries(name)
+            urbanAreaInfo?.scores = urbanAreaService.getUrbanAreaScores(name)
+            urbanAreaInfo?.imgUrl =
+                urbanAreaService.getUrbanAreaImage(name)?.photos?.get(0)?.image?.mobile
+            urbanAreaInfo?.result = result
+            urbanAreaInfo?.let {
+                templistOfUrbanAreaInfo.add(urbanAreaInfo)
+            }
+        } catch (e: Exception) {
+            Log.d("Exception", e.toString())
         }
+
     }
 }

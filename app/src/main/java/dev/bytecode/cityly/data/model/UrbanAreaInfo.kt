@@ -13,5 +13,6 @@ data class UrbanAreaInfo (
 
     var salaries: Salaries? = null,
     var scores: Scores? = null,
-    var imgUrl: String? = null
+    var imgUrl: String? = null,
+    var result: Double = 0.0
 )

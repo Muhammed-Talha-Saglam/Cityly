@@ -30,7 +30,6 @@ import dev.bytecode.cityly.ui.theme.Orange
 import dev.bytecode.cityly.ui.theme.Purple
 import dev.bytecode.cityly.utilities.removeTag
 import dev.bytecode.cityly.viewModels.MainViewModel
-import kotlin.math.roundToInt
 
 @Composable
 fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
@@ -41,7 +40,10 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
     when (result.value) {
         is Result.Loading -> {
             Box(Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = Purple)
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Purple
+                )
             }
         }
         is Result.Success -> {
@@ -49,14 +51,66 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
                 Modifier.fillMaxSize(),
                 state = listState,
                 contentPadding = PaddingValues(Dp(10f)),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                itemsIndexed(
-                    items = (result.value as Result.Success<List<UrbanAreaInfo>>).data!!,
-                    key = { i, city -> city.fullName }
-                ) { i, city ->
-                    CityItem(city, navController, vm)
+                when (result.value) {
+                    is Result.Loading -> {
+                        item {
+                            Box(Modifier.fillMaxSize()) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    color = Purple
+                                )
+                            }
+                        }
+                    }
+                    is Result.Success -> {
+                        item {
+                            Text(text = "Best cities for your choices")
+                        }
+                        itemsIndexed(
+                            items = (result.value as Result.Success<List<UrbanAreaInfo>>).data!!,
+                        ) { i, city ->
+                            CityItem(city, navController, vm)
+                        }
+
+                        item {
+                            TextButton(
+                                modifier = Modifier
+                                    .padding(vertical = 15.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    vm.getUrbanAreas()
+                                },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Purple)
+                            ) {
+                                Text(
+                                    text = "SEE MORE",
+                                    style = MaterialTheme.typography.h6.copy(Color.White)
+                                )
+                            }
+                        }
+                    }
+                    else -> {
+                        item {
+                            TextButton(
+                                modifier = Modifier
+                                    .padding(vertical = 15.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    vm.getUrbanAreas()
+                                },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Purple)
+                            ) {
+                                Text(
+                                    text = "ERROR\nTRY AGAIN",
+                                    style = MaterialTheme.typography.h6.copy(Color.White)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -66,7 +120,10 @@ fun cityItemsList(vm: MainViewModel, navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "${(result.value as Result.Error<List<UrbanAreaInfo>>).message}", color = Color.Black)
+                Text(
+                    text = "${(result.value as Result.Error<List<UrbanAreaInfo>>).message}",
+                    color = Color.Black
+                )
                 Button(
                     onClick = { vm.getUrbanAreas() }) {
                     Text(text = "TRY AGAIN")
@@ -123,6 +180,8 @@ fun CityItem(
                 Text(
                     text = urbanAreaInfo.fullName,
                     style = MaterialTheme.typography.body1,
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(
                     modifier = Modifier
@@ -130,12 +189,12 @@ fun CityItem(
                         .weight(2f)
                 )
                 Icon(imageVector = Icons.Default.Star, tint = Orange, contentDescription = "star")
-                Text(text = urbanAreaInfo.scores?.teleportCityScore?.roundToInt().toString(), color = Color.Black)
+                Text(text = urbanAreaInfo.result.toString(), color = Color.Black)
             }
             Spacer(modifier = Modifier.height(Dp(4f)))
             Text(
                 text = removeTag(urbanAreaInfo.scores?.summary),
-                modifier = Modifier.padding( horizontal = 10.dp),
+                modifier = Modifier.padding(horizontal = 10.dp),
                 style = MaterialTheme.typography.body2,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
