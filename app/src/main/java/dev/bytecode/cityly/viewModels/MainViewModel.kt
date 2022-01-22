@@ -17,7 +17,6 @@ import dev.bytecode.cityly.data.network.UrbanAreaService
 import dev.bytecode.cityly.utilities.NetworkUtils
 import kotlinx.coroutines.*
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -34,7 +33,7 @@ class MainViewModel @Inject constructor(
     var selectedUrbanAreaInfo = mutableStateOf<UrbanAreaInfo?>(null)
     lateinit var cityHrefs: Array<City>
     lateinit var cities: Array<City>
-    var lastIndex = Random.nextInt(250)
+    var lastIndex = 0
     var result = MutableLiveData<Result<List<UrbanAreaInfo>>>()
 
     init {

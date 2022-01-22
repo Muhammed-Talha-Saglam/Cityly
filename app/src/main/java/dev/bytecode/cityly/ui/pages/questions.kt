@@ -20,7 +20,6 @@ import dev.bytecode.cityly.data.model.Question
 import dev.bytecode.cityly.ui.theme.Purple
 import dev.bytecode.cityly.ui.theme.Yellow
 import dev.bytecode.cityly.viewModels.MainViewModel
-import kotlin.random.Random
 
 @Composable
 fun Questions(vm: MainViewModel, navController: NavHostController) {
@@ -64,7 +63,6 @@ fun Questions(vm: MainViewModel, navController: NavHostController) {
                     onClick = {
                         vm.templistOfUrbanAreaInfo.clear()
                         vm.listOfUrbanAreaInfo.clear()
-                        vm.lastIndex = Random.nextInt(250)
                         vm.getUrbanAreas()
                         navController.navigate(Routes.CITY_ITEM_LIST)
                     },
